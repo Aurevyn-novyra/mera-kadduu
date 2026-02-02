@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You, Betu 🤍</title>
+    <!-- Romantic Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #faf7f2;
+            --accent-pink: #f4dcd6;
+            --soft-gold: #c5a059;
+            --text-main: #4a3f3b;
+            --text-light: #9b8a84;
+            /* Ultra-realistic skin tone palette */
+            --skin-base: #f7dcd1;
+            --skin-mid: #eac7ba;
+            --skin-deep: #d9a896;
+            --skin-highlight: #fdf5f2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, .cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* --- Scroll Progress Bar --- */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--accent-pink); z-index: 1000; width: 0%;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quote {
+            font-size: 2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            font-weight: 300;
+        }
+
+        /* --- Music Player UI --- */
+        .music-box {
+            position: fixed; bottom: 30px; right: 30px; z-index: 100;
+            background: white; padding: 10px 15px; border-radius: 30px;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            cursor: pointer; transition: 0.3s;
+        }
+        .music-box:hover { transform: scale(1.05); }
+        .music-visualizer {
+            display: flex; gap: 3px; height: 15px; align-items: flex-end;
+        }
+        .bar { width: 3px; background: var(--accent-pink); border-radius: 3px; }
+        .playing .bar { animation: barGrow 1s infinite ease-in-out; }
+        @keyframes barGrow { 0%, 100% { height: 5px; } 50% { height: 15px; } }
+
+        /* --- Distance Map Section --- */
+        .map-visual {
+            position: relative; width: 300px; height: 100px; margin: 3rem 0;
+        }
+        .map-line {
+            position: absolute; top: 50%; left: 0; width: 100%; height: 2px;
+            background: repeating-linear-gradient(90deg, #d6c3ba, #d6c3ba 5px, transparent 5px, transparent 10px);
+        }
+        .heart-traveler {
+            position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+            font-size: 1.5rem; transition: left 0.1s linear;
+        }
+
+        /* --- THE CEREMONY: EXTREME REALISM --- */
+        .ceremony-container {
+            perspective: 1200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .ceremony-stage {
+            position: relative;
+            width: 350px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        /* The Finger: High Fidelity */
+        .finger-realistic {
+            position: relative;
+            width: 95px;
+            height: 380px;
+            z-index: 1;
+            background: linear-gradient(to right, 
+                var(--skin-deep) 0%, 
+                var(--skin-base) 25%, 
+                var(--skin-highlight) 50%, 
+                var(--skin-mid) 75%, 
+                var(--skin-deep) 100%
+            );
+            border-radius: 50px 50px 20px 20px;
+            box-shadow: 
+                inset -8px 0 20px rgba(139, 93, 72, 0.2), 
+                inset 8px 0 15px rgba(255, 255, 255, 0.5),
+                20px 30px 50px rgba(0,0,0,0.1);
+            overflow: visible;
+        }
+
+        .finger-realistic::after { /* Subsurface scattering effect */
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 10%, rgba(255,180,180,0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .nail {
+            position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+            width: 58px; height: 75px;
+            background: linear-gradient(to bottom, #fceae3, #f7dcd1);
+            border-radius: 28px 28px 10px 10px;
+            box-shadow: inset 0 -3px 5px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.05);
+            opacity: 0.8;
+        }
+
+        .knuckle-detail {
+            position: absolute; width: 70%; left: 15%; height: 2px;
+            background: rgba(0,0,0,0.05); border-radius: 50%;
+        }
+
+        /* The Paper Ring: Origami Physics */
+        #ring-wrapper {
+            position: absolute;
+            top: 40px;
+            width: 130px;
+            z-index: 10;
+            transition: all 4.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotateX(25deg) rotateY(0deg);
+            filter: drop-shadow(0 20px 20px rgba(0,0,0,0.15));
+        }
+
+        #ring-wrapper.worn {
+            top: 245px;
+            transform: rotateX(10deg) scale(0.8);
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.25));
+        }
+
+        /* Dynamic shadow on the skin */
+        #ring-shadow {
+            position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+            width: 90px; height: 20px; background: rgba(0,0,0,0.1);
+            border-radius: 50%; filter: blur(8px); opacity: 0;
+            transition: all 4.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+        #ring-wrapper.worn + .finger-realistic #ring-shadow {
+            top: 245px; opacity: 0.4; width: 70px;
+        }
+
+        /* --- Interactive Rose Petals --- */
+        .petal {
+            position: fixed; pointer-events: none; z-index: 999;
+            background: #f4dcd6; border-radius: 150% 0 150% 0;
+            animation: petalFall 6s linear forwards;
+        }
+        @keyframes petalFall {
+            0% { transform: translate(0, -10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translate(100px, 110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* --- Buttons & UI --- */
+        .action-btn {
+            background: white; border: none; padding: 1.2rem 3rem;
+            border-radius: 50px; font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem; color: var(--text-main); cursor: pointer;
+            box-shadow: 0 10px 30px rgba(244, 220, 214, 0.6);
+            transition: 0.4s; position: relative; overflow: hidden;
+        }
+        .action-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(244, 220, 214, 0.8); }
+
+        .flash-effect {
+            position: fixed; inset: 0; background: white; opacity: 0;
+            pointer-events: none; z-index: 2000;
+        }
+
+        /* --- Responsiveness --- */
+        @media (max-width: 480px) {
+            .quote { font-size: 1.4rem; }
+            .ceremony-stage { transform: scale(0.8); margin-top: -50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+    <div class="flash-effect" id="flash"></div>
+
+    <div class="music-box" id="music-btn" onclick="toggleMusic()">
+        <div class="music-visualizer" id="visualizer">
+            <div class="bar" style="animation-delay: 0.1s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+            <div class="bar" style="animation-delay: 0.2s"></div>
+            <div class="bar" style="animation-delay: 0.4s"></div>
+        </div>
+        <span style="font-size: 0.9rem; font-weight: 500;">Music for Betu</span>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Section 1: Landing -->
+    <section id="landing">
+        <h1 class="cursive" style="font-size: 4rem; color: var(--soft-gold); margin-bottom: 1rem;">Hey Betu...</h1>
+        <p class="quote">“They say paper rings don’t last…<br>but some promises don’t need gold.”</p>
+        <div class="cursive" style="font-size: 1.5rem; opacity: 0.6;">Scroll down slowly... 🤍</div>
+    </section>
+
+    <!-- Section 2: Showcase -->
+    <section>
+        <div style="transform: rotate(-5deg); transition: 0.5s;" onmouseover="this.style.transform='rotate(0deg) scale(1.1)'" onmouseout="this.style.transform='rotate(-5deg) scale(1)'">
+            <svg width="200" height="200" viewBox="0 0 200 200">
+                <defs>
+                    <filter id="paper-shadow"><feDropShadow dx="0" dy="5" stdDeviation="3" flood-opacity="0.1"/></filter>
+                </defs>
+                <circle cx="100" cy="140" r="45" fill="none" stroke="#eee3dd" stroke-width="12" />
+                <path d="M100 40 L150 80 L100 120 L50 80 Z" fill="white" filter="url(#paper-shadow)" />
+                <path d="M100 55 L130 80 L100 105 L70 80 Z" fill="#fcf9f5" />
+                <circle cx="100" cy="80" r="6" fill="#f4dcd6" />
+            </svg>
+        </div>
+        <h2 class="quote">This ring isn't expensive.<br>But it is intentional.</h2>
+    </section>
+
+    <!-- Section 3: Distance Map -->
+    <section>
+        <h2 class="cursive" style="font-size: 2.5rem;">Distance is just a number.</h2>
+        <div class="map-visual">
+            <div class="map-line"></div>
+            <div class="heart-traveler" id="traveling-heart">✈️</div>
+            <div style="position:absolute; left:0; bottom:-25px; font-size: 0.8rem;">Me</div>
+            <div style="position:absolute; right:0; bottom:-25px; font-size: 0.8rem;">Ria (Betu)</div>
+        </div>
+        <p class="quote" style="font-size: 1.2rem;">Miles exist on maps,<br>not between hearts that choose each other.</p>
+    </section>
+
+    <!-- Section 4: The Interaction -->
+    <section id="interactive-section">
+        <div class="ceremony-container">
+            <div class="ceremony-stage">
+                <!-- The Paper Ring -->
+                <div id="ring-wrapper">
+                    <svg viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="paperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ffffff" />
+                                <stop offset="100%" style="stop-color:#f0e6e1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- High detail origami band -->
+                        <circle cx="100" cy="150" r="50" fill="none" stroke="url(#paperGrad)" stroke-width="14" />
+                        <!-- Rose Top with Folds -->
+                        <path d="M100 30 L150 75 L100 120 L50 75 Z" fill="white" stroke="#d6c3ba" stroke-width="0.5" />
+                        <path d="M100 45 L130 75 L100 105 L70 75 Z" fill="#fdfaf8" stroke="#d6c3ba" stroke-width="0.5" />
+                        <circle cx="100" cy="75" r="7" fill="#f4dcd6" />
+                    </svg>
+                </div>
+
+                <!-- The Realistic Finger -->
+                <div class="finger-realistic">
+                    <div id="ring-shadow"></div>
+                    <div class="nail"></div>
+                    <div class="knuckle-detail" style="top: 35%;"></div>
+                    <div class="knuckle-detail" style="top: 37%;"></div>
+                    <div class="knuckle-detail" style="top: 68%;"></div>
+                    <div class="knuckle-detail" style="top: 70%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <button class="action-btn" id="ring-btn" onclick="startCeremony()">
+            Betu, haath aage badhao 🤍
+        </button>
+
+        <div id="final-msg" class="cursive" style="margin-top: 2rem; opacity: 0; font-size: 2rem; color: var(--soft-gold); transition: 2s;">
+            Pehna di... Forever yours.
+        </div>
+    </section>
+
+    <!-- Section 5: Signature -->
+    <section>
+        <p class="quote" style="font-size: 2.2rem;">Until the real ring…<br>this one is yours.</p>
+        <div style="margin-top: 4rem;">
+            <p class="sub-text" style="color: var(--text-light); letter-spacing: 2px;">ALWAYS.</p>
+            <h1 class="cursive" style="font-size: 4rem; margin-top: 0.5rem;">Priyanshu 🤍</h1>
+        </div>
+    </section>
+
+    <script>
+        // Scroll Progress & Map Interaction
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // Map heart movement
+            const heart = document.getElementById('traveling-heart');
+            heart.style.left = scrolled + "%";
+            heart.innerHTML = scrolled > 95 ? "🏠" : "✈️";
+        });
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+        // Ceremony Logic
+        function startCeremony() {
+            const wrapper = document.getElementById('ring-wrapper');
+            const btn = document.getElementById('ring-btn');
+            const msg = document.getElementById('final-msg');
+            const flash = document.getElementById('flash');
+
+            btn.style.opacity = '0';
+            btn.style.pointerEvents = 'none';
+
+            // Phase 1: Sliding down
+            wrapper.classList.add('worn');
+
+            // Phase 2: The "Moment"
+            setTimeout(() => {
+                // Flash effect (Camera click feel)
+                flash.style.opacity = '1';
+                setTimeout(() => flash.style.opacity = '0', 200);
+                
+                msg.style.opacity = '1';
+                spawnPetals();
+                
+                // Pulsing glow
+                wrapper.animate([
+                    { filter: 'drop-shadow(0 0 5px rgba(197,160,89,0))' },
+                    { filter: 'drop-shadow(0 0 30px rgba(197,160,89,0.5))' },
+                    { filter: 'drop-shadow(0 0 5px rgba(197,160,89,0))' }
+                ], { duration: 3000, iterations: Infinity });
+
+            }, 4500);
+        }
+
+        function spawnPetals() {
+            for(let i=0; i<40; i++) {
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'petal';
+                    p.style.left = Math.random() * 100 + 'vw';
+                    p.style.width = (Math.random() * 15 + 10) + 'px';
+                    p.style.height = (Math.random() * 10 + 10) + 'px';
+                    p.style.opacity = Math.random();
+                    document.body.appendChild(p);
+                    setTimeout(() => p.remove(), 6000);
+                }, i * 150);
+            }
+        }
+
+        function toggleMusic() {
+            const m = document.getElementById('bg-music');
+            const box = document.getElementById('music-btn');
+            const viz = document.getElementById('visualizer');
+            if (m.paused) {
+                m.play();
+                viz.classList.add('playing');
+                box.style.background = '#fefefe';
+            } else {
+                m.pause();
+                viz.classList.remove('playing');
+                box.style.background = '#f2f2f2';
+            }
+        }
+
+        // Custom Cursor Interaction
+        document.addEventListener('mousemove', (e) => {
+            if(Math.random() > 0.92) { // Trail effect
+                const t = document.createElement('div');
+                t.innerHTML = '✨';
+                t.style.position = 'fixed';
+                t.style.left = e.clientX + 'px';
+                t.style.top = e.clientY + 'px';
+                t.style.pointerEvents = 'none';
+                t.style.fontSize = '12px';
+                t.style.zIndex = '9999';
+                document.body.appendChild(t);
+                t.animate([
+                    { transform: 'translateY(0) scale(1)', opacity: 1 },
+                    { transform: 'translateY(20px) scale(0)', opacity: 0 }
+                ], { duration: 1000, easing: 'ease-out' });
+                setTimeout(() => t.remove(), 1000);
+            }
+        });
+    </script>
+</body>
+</html>
